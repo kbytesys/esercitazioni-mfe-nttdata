@@ -1,0 +1,17 @@
+version: '3'
+services:
+  team-caronte:
+    build:team-caronte/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "team-decide"
+      - "team-inspire"
+  team-decide:
+    build: team-decide/
+    ports:
+      - "91:91"
+  team-inspire:
+    build: team-inspire/
+    ports:
+      - "92:92"
