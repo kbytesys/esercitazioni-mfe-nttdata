@@ -1,0 +1,17 @@
+version: '3'
+services:
+  entrypoint3.2:
+    build: entrypoint/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "team-decide3.2"
+      - "team-inspire3.2"
+  team-decide3.2:
+    build: team-decide/
+    ports:
+      - "91:91"
+  team-inspire3.2:
+    build: team-inspire/
+    ports:
+      - "92:92"

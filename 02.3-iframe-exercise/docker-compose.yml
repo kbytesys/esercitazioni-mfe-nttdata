@@ -1,0 +1,10 @@
+version: '3'
+services:
+  team-decide2.3:
+    build: team-decide/
+    ports:
+      - "90:90"
+  team-inspire2.3:
+    build: team-inspire/
+    ports:
+      - "91:90"

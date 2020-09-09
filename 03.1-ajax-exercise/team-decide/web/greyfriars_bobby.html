@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Adventures of Greyfriars Bobby</title>
+    <link rel="stylesheet" href="./static/tailwind.min.css" />
+    <style type="text/css">
+      html {
+        background-color: transparent !important;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-black h-screen w-screen flex items-center justify-center flex-col border border-8 border-red-400"
+  >
+    <img
+      src="https://m.media-amazon.com/images/M/MV5BNTU0ZmY0YTctNDJjNS00ZjYyLTg2NTUtNzA3Y2Y1M2RmZjgyXkEyXkFqcGdeQXVyMTQ3Njg3MQ@@._V1_SX300.jpg"
+      class="inset-0 absolute w-screen h-screen contains z-0"
+      style="opacity: 0.1"
+    />
+
+    <img
+      src="./static/logo.png"
+      alt="petflix"
+      class="absolute inset-0 p-3 w-32"
+    />
+
+    <article
+      class="md:w-2/3 mx-auto relative flex flex-col md:flex-row items-center"
+    >
+      <img
+        src="https://m.media-amazon.com/images/M/MV5BNTU0ZmY0YTctNDJjNS00ZjYyLTg2NTUtNzA3Y2Y1M2RmZjgyXkEyXkFqcGdeQXVyMTQ3Njg3MQ@@._V1_SX300.jpg"
+        class="rounded shadow-lg w-64 md:w-full mb-2"
+      />
+
+      <div class="p-3">
+        <h1 class="text-gray-100 text-lg text-center">
+          The Adventures of Greyfriars Bobby
+        </h1>
+        <h2 class="text-red-300 text-sm text-center mb-2">
+          2005 - Warner Bros. Pictures
+        </h2>
+        <p class="text-red-200 text-xs text-center">
+          Bobby, a brave Skye Terrier, becomes local legend when it refuses to
+          leave his master's grave after he dies. The townsfolk feed the dog
+          until local authorities ban strays. The kids decide to help Bobby defy
+          the law. Based on true events.
+        </p>
+
+        <div class="recos"  data-fragment="http://127.0.0.1:91/fragments/greyfriars_bobby.html">
+          <a
+            href="http://127.0.0.1:91/greyfriars_bobby.html"
+            class="bg-red-600 rounded text-xs text-white uppercase p-3 m-3 block text-center"
+            >Suggest me a film</a
+          >
+        </div>
+      </div>
+    </article>
+
+    <script src="./static/loader.js" async></script>
+    
+  </body>
+</html>
