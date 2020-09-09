@@ -1,0 +1,381 @@
+
+import { Split, Steps } from 'mdx-deck'
+
+import previewz from './assets/03/preview.png';
+import chart from './assets/03/chart.png';
+
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark, nightOwl } from "@code-surfer/themes";
+import petflix from "./assets/logo.png"
+
+export const theme = {
+  fonts: {body: 'avenir, sans-serif'},
+  styles: {
+    Slide: {
+      padding: '20px',
+      textAlign: 'left',
+    },
+    Split: {
+      textAlign: 'left!important'
+    },
+    img: {
+      maxWidth: '100%'
+    },
+    weights: 400,
+  },
+  colors: {
+    text: '#6AD798',
+    background: 'rgb(1, 22, 39)',
+    link: '#fff',
+    pre: '#fff',
+    preBackground: '#051626',
+    code: '#fff'
+  }
+}
+
+<Split>
+
+<img src="https://www.experfy.com/blog/wp-content/uploads/2020/07/images.jpeg" style={{"width": "40vw"}} />
+
+I problemi di accessibilità e di indicizzazione possono facilmente risolti implementando chiamate ajax per andare a scaricare i fragment del suggerimento (inspire)
+
+</Split>
+
+---
+
+<img src={previewz} style={{width: '40vw'}}/>
+
+---
+
+<Steps>
+
+- **Team Inspire:** espone le raccomandazioni come un frammento
+- **Team Decide:** carica il frammento e lo inserisce nel proprio DOM
+
+- Ci si deve accordare su stili condivisi e url (esattamente come abbiamo fatto per il routing)
+
+</Steps>
+
+---
+
+<Split>
+
+<img src="https://media4.giphy.com/media/LN6AfV6TxxJtu/200.gif" style={{"width": "20vw"}} />
+
+Ogni fragment espone i suoi stili
+
+
+</Split>
+
+---
+
+Il team inspire creerà delle nuove pagine che conterranno dei fragments.
+
+L'html delle pagine non avrà l'head perche sarà solo il frammento che verrà incluso
+
+---
+
+<img src={previewz} style={{width: '40vw'}}/>
+
+---
+
+<Steps>
+
+- Creo dei fragment di bare html (team inspire)
+- inserisco un div nelle pagine nel fil per poter inserire dentro il fragment, e ci metto dentro un pulsante per andare nella pagina in modo che se non c'è js attivato fallisce in modo gradevole (team decide)
+- scrivo uno script che carichi il fragment e sostituisca il link button (team decide)
+
+</Steps>
+
+---
+
+# Lo stile
+
+---
+
+<Split>
+
+<img src="https://media2.giphy.com/media/c4t11obaChpu0/200.gif" style={{"width": "40vw"}} />
+
+# Namespacing
+
+L'esecuzione all'interno dello stesso documento introduce alcune sfide. 
+
+ogni team deve assolutamente creare stili e script che non vadano in conflitto
+
+</Split>
+
+---
+
+# Namespacing (soluzioni)
+
+<Steps>
+
+- Usare la specifica scoped di css ma è obsoleta e verrà eliminata dai browser
+- Prefissare le classi di stile
+- Usare lo shadow dom
+
+</Steps>
+
+---
+
+# Prefix all selectors
+
+<table border="1" class="contenttable" summary="Namespacing all CSS selectors with a team prefix" width="100%"> 
+  <tbody>
+   <tr class="calibre28"> 
+    <td class="contenttable1" colspan="1" rowspan="1">Team Name</td> 
+    <td class="contenttable1" colspan="1" rowspan="1">Team Prefix</td> 
+    <td class="contenttable1" colspan="1" rowspan="1">Example Selectors</td> 
+   </tr> 
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Decide</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">decide</code></p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">.decide_headline .decide_recos</code></p> </td> 
+   </tr> 
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Inspire</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">inspire</code></p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">.inspire_headline .inspire_recommendation__item</code></p> </td> 
+   </tr> 
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Checkout</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">checkout</code></p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">.checkout_minicart .checkout_minicart—empty</code></p> </td> 
+   </tr> 
+  </tbody>
+ </table>
+
+---
+
+Puoi farlo usando soluzioni come css-modules, Post-css, SASS, CSS in JS
+
+---
+
+# Isolare il javascript
+
+Noi non usiamo js nel nostro fragment ma se dovessimo usarla potremmo utilizzare una IIFE
+
+`immediately invoked function expression`
+
+le variabili e le funzioni dichiarate dell'applicazione non vengono aggiunte all'oggetto globale window. 
+
+Questo tipo di azione viene fatta automaticamente da buncler come webpack
+
+---
+
+<CodeSurfer title="IIFE" theme={nightOwl} >
+
+```js
+
+(function () {
+  const element = ...;
+  ...
+})();
+
+```
+
+</CodeSurfer>
+
+---
+
+# ...e se avessi bisogno di una variabile globale
+
+<Steps>
+
+- fornire dati strutturati sotto forma di un oggetto JavaScript insieme al markup direttamente dal server
+- Questo oggetto deve essere accessibile dal JavaScript lato client. 
+- Una buona alternativa è scrivere i dati nel markup in modo dichiarativo.
+
+</Steps>
+
+---
+
+<CodeSurfer title="" theme={nightOwl} >
+
+```js
+
+<script>
+    const MY_STATE = {name: "Porsche"};
+</script>
+
+```
+
+
+```js
+<script data-inspire-state type="application/json">
+{"name":"Rex"}
+</script>
+
+(function () {
+  const stateContainer = fragment.querySelector("[data-inspire-state]");
+  const MY_STATE = JSON.parse(stateContainer.innerHTML);
+})();
+
+
+```
+
+</CodeSurfer>
+
+---
+
+# Ci sono altre situazioni dove dobbiamo limitare lo scope?
+
+---
+
+<table border="1" class="contenttable" summary="Some JavaScript functionalities also need namespacing" width="100%"> 
+  <tbody>
+   <tr class="calibre28"> 
+    <td class="contenttable1" colspan="1" rowspan="1">Function</td> 
+    <td class="contenttable1" colspan="1" rowspan="1">Example</td> 
+   </tr> 
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Cookies</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">document.cookie = "decide_optout=true";</code></p> </td> 
+   </tr> 
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Local Storage</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">localStorage["<strong class="calibre20">decide</strong>:last_seen"] = "a,b";</code></p> </td> 
+   </tr> 
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Session Storage</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">sessionStorage["<strong class="calibre20">inspire</strong>:last_seen"] = "c,d";</code></p> </td> 
+   </tr> 
+  </tbody>
+</table>
+
+---
+
+<table border="1" class="contenttable" summary="Some JavaScript functionalities also need namespacing" width="100%"> 
+  <tbody>
+
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Custom Events</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">new CustomEvent("<strong class="calibre20">checkout</strong>:item_added"); window.addEventListener("<strong class="calibre20">checkout</strong>:item_added", …);</code></p> </td> 
+   </tr> 
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Unavoidable Globals</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">window.<strong class="calibre20">checkout</strong>.myGlobal = "needed this!"</code></p> </td> 
+   </tr> 
+   <tr class="calibre28"> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p>Meta-Tags</p> </td> 
+    <td class="contenttable2" colspan="1" rowspan="1"> <p><code class="code1">&lt;meta name="<strong class="calibre20">inspire</strong>:feature_a" content="off" /&gt;</code></p> </td> 
+   </tr> 
+  </tbody>
+</table>
+
+---
+
+Il namespacing non solo redime i conflitti ma ne indica l'apparteneza e **la proprieta** dell'elemento a un team.
+
+---
+
+
+
+<img src="https://thumbs.dreamstime.com/t/voting-seesaw-24108219.jpg" style={{"width": "30vw"}} />
+
+PRO E CONTRO
+
+---
+
+# PRO
+
+---
+
+# Flusso di documenti naturale
+
+<Steps>
+
+- integriamo tutti i contenuti in un DOM. 
+- I frammenti fanno ora parte del flusso di documenti delle pagine. 
+- Il frammento occupa esattamente lo spazio di cui ha bisogno. 
+- Il team che include il frammento non deve conoscere in anticipo l'altezza del frammento. 
+- Se si inseriscono piu raccomandazioni la pagina si adatta.
+
+</Steps>
+
+---
+
+# Motori di ricerca e accessibilità
+
+<Steps>
+
+- questo modello funziona bene per i motori di ricerca (comunque ssr è migliore). 
+- Le tecnologie assistive come gli screen reader supportano questo metodo. 
+- markup + fragment deve avere senso (gerarchia dom elements corretta)
+
+</Steps>
+
+---
+
+# Miglioramento progressivo
+
+<Steps>
+
+- la pagina viene generata dal server con il link al posto del frammento
+- ajax sostituisce il link con il contenuto del frammento
+
+</Steps>
+
+---
+
+
+# Gestione flessibile degli errori
+
+Quando la chiamata fetch () fallisce o impiega troppo tempo, puoi decidere cosa vuoi fare. 
+
+<Steps>
+
+- lasciare il link
+- rimuovere lo slot del frammento
+- inserirci contenuto Custom
+
+</Steps>
+
+---
+
+# CONTRO
+
+---
+
+# Caricamento asincrono
+
+- la pagina sfarfalla nel ridimensionamento al caricamento.
+
+---
+
+# Manca l'isolamento
+
+- dobbiamo stare attenti a isolare i conflitti
+
+---
+
+# Server request required
+
+- al caricare la pagina ci sono tante richieste http quanti fragment e spesso sono un ostacolo in ambiti con connessioni lente
+
+---
+
+# Nessun ciclo di vita per gli script
+
+se la pagina esterna aggiorna il fragment non ho nessuna possibilità che il fragment gestisca il ciclo di vista degli eventi es: smontare i listener
+
+---
+
+<Split>
+
+<img src="https://media2.giphy.com/media/MLhIi4DoxeUjC/200.gif" style={{"width": "40vw"}} />
+
+# USA I MALEDETTI WEB COMPONENTS
+
+
+</Split>
+
+---
+
+<img src={chart} style={{"width": "60vw"}} />
+

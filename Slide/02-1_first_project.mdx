@@ -1,0 +1,325 @@
+
+import { Split } from 'mdx-deck'
+import asset1 from './assets/1.png'
+import asset2 from './assets/2.png'
+import asset3 from './assets/3.png'
+import pipelines from './assets/02/1.png'
+import app_schema from './assets/02/app_schema.png'
+import app_schema_docker from './assets/02/app_schema_docker.png'
+
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark, nightOwl } from "@code-surfer/themes";
+import petflix from "./assets/logo.png"
+
+export const theme = {
+  fonts: {body: 'avenir, sans-serif'},
+  styles: {
+    Slide: {
+      padding: '20px',
+      textAlign: 'left',
+    },
+    Split: {
+      textAlign: 'left!important'
+    },
+    img: {
+      maxWidth: '100%'
+    },
+    weights: 400,
+  },
+  colors: {
+    text: '#6AD798',
+    background: 'rgb(1, 22, 39)',
+    link: '#fff',
+    pre: '#fff',
+    preBackground: '#051626',
+    code: '#fff'
+  }
+}
+
+# Petflix
+
+<img src={petflix} style={{width:"500px"}} />
+
+---
+
+# Cosa faremo:
+
+- Creazione dell'applicazione di esempio di micro frontend
+- Collegamento pagine dei due team tramite link
+- Integrazione di un fragment in una pagina tramite iframe
+
+---
+
+# caratteristica essenziale dei micro frontend
+
+- Applicazione complessa con più team in parallelo
+- Utente non deve percepire la frammentazione che sta sotto
+
+I link e gli iframe sono strumenti rudimentali ma portano un vantaggio
+
+**introducono un accoppiamento minimo tra i team**
+
+---
+
+# Petflix
+
+Sito web dove acquistare i film che hanno per protagonista un animale
+
+---
+
+Soluzione a microfrontend:
+- scalare rapidamente e 
+- sperimentare nuovi framework contenendo i rischi
+
+--- 
+
+**Team Decide**: creerà una pagina dei dettagli del prodotto per tutti i film 
+che mostra il nome e l'immagine. 
+
+**Team Inspire:** fornirà consigli di corrispondenza. 
+Nella prima iterazione, ogni squadra mostra il proprio contenuto 
+su una pagina separata dal proprio dominio. 
+
+---
+
+__Collegano le pagine tramite link__
+
+Quindi abbiamo una pagina del prodotto e una pagina dei consigli per ogni modello.
+
+---
+
+# Il processo di sviluppo
+
+---
+
+# Libertà di scelta della tecnologia
+
+- Team Decide: MongoDB / Node.js,
+- Team Inspire: Python (ml related functions).
+
+La diversità tecnologica però non è un requisito, alle volte può conveniere usare lo stesso stack
+
+---
+
+<Split>
+
+<img src={pipelines} style={{"width": "40vw"}} />
+
+# Deploy indipendenti
+
+<Steps>
+
+- I team lavorano nel proprio repository di codice sorgente 
+- hanno pipeline di integrazione separate
+- possono distribuire in modo indipendente.
+
+</Steps>
+
+
+</Split>
+
+---
+
+<Split>
+
+<img src="https://www.hostingadvice.com/wp-content/uploads/2014/02/computer-keys.jpg" style={{"width": "40vh"}} />
+
+# Data Ownership
+
+</Split>
+
+
+---
+
+
+## Team Decide possiede i dati del film. 
+
+- tool per aggiungere /aggiornare i film
+- hosting delle immagini del prodotto (s3)
+
+---
+
+## Team Inspire necessita di alcuni dati di prodotto. 
+
+- Devono conoscere tutti gli id esistenti e l'URL dell'immagine associata. 
+- Backend di Team Inspire importa regolarmente questi dati dal feed di dati di Team Decide. 
+- conserva una copia locale dei campi rilevanti nel proprio database. 
+
+---
+
+# Contratto tra le teams
+
+In questa integrazione, l'URL è il nostro contratto tra i team. 
+
+I team che possiedono una pagina pubblicano i propri pattern URL. Gli altri possono usarlo per creare un collegamento. 
+
+---
+
+# Team Decide: 
+
+Film Page URL-pattern: `http://localhost:3001/product/{id}`
+
+
+# Team Inspire: 
+
+Recommendation Page URL-pattern: `http://localhost:3002/recommendations/{id}`
+
+---
+
+<Split>
+
+<img src="https://static1.smartbear.co/swagger/media/assets/images/swagger_logo.svg" style={{"width": "40vw"}} />
+
+Definiamo le specifiche usando Swagger doc
+
+</Split>
+
+
+---
+
+<CodeSurfer title="" theme={nightOwl} >
+
+
+```bash title="installiamo il tool commandline di swagger"
+npm install -g swagger
+```
+
+```json title="creiamo il package.json con le deps"
+{
+  "name": "swagger-docs",
+  "version": "1.0.0",
+  "description": "Swagger docs for microfrontend course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "swagger",
+    "microfrontent",
+    "nttdata"
+  ],
+  "author": "brainrepo",
+  "license": "ISC",
+  "dependencies": {
+    "swagger-ui": "^3.31.1"
+  }
+}
+
+```
+
+```json title="definisco la documentazione nel file api/swagger/swagger.yaml "
+
+swagger: "2.0"
+info:
+    title: Team A Feature
+    description: This is a sample.
+    termsOfService: http://swagger.io/terms/
+    contact:
+        name: API Support
+        url: http://www.swagger.io/support
+        email: support@swagger.io
+    license:
+        name: Apache 2.0
+        url: http://www.apache.org/licenses/LICENSE-2.0.html
+    version: 1.0.1
+host: teama.nttdata-microfrontend.it
+basePath: /
+schemes: 
+  - https
+paths:
+  /weather:
+    get:
+      summary: Get temperature
+      description: |
+        Get the temperature for the given city
+        A detailed description of the operation.
+        Use markdown for rich text representation,
+        such as **bold**, *italic*, and [links](https://swagger.io).
+      operationId: getTemperature
+      parameters:
+        - name: city
+          in: query
+          description: City Name
+          type: string
+      responses:
+        200:
+          description: OK
+    
+
+```
+
+
+```js
+
+swagger project edit
+
+npm install -g spectacle-docs
+
+spectacle  -t build /Users/mauro/Desktop/Microfrontend-101/03-swagger-docs/api/swagger/swagger.yaml
+
+```
+
+
+
+</CodeSurfer>
+
+---
+
+# Realizziamo petflix
+
+---
+
+<img src={app_schema} style={{width: '80vw'}} />
+
+---
+
+# Petflix architettura
+
+I due team rilasciano due container docker
+uno sulla porta `90` e uno su `91` 
+
+---
+
+<img src={app_schema_docker}  style={{width: '80vw'}}/>
+
+---
+
+# Pro e contro nell'uso dei link
+
+# vantaggi
+
+- accopiamento basso
+- robustezza è alta
+
+---
+
+**accoppiamento**: Quanto un team deve sapere sul sistema dell'altro team per far funzionare l'integrazione, nel nostro caso si conosce solo il link.
+
+**elevata robustezza**: Quando un sistema fallisce, l'altro rimane in piedi.  Un errore in un sistema non può influire sul sistema dell'altra squadra.
+
+---
+
+# Gli svantaggi
+
+Non condividere nulla ha un costo:
+- spostarsi da un sistema all'altro tramite click è limitante
+- non si possono combinare i due sistemi in un unica vista
+- ridondanza tecnica e overhead (header ecc...). 
+
+
+---
+
+# Quando hanno senso i collegamenti?
+
+Quando si crea un sito un po 'complicato, un'integrazione che si basa 
+solo sui collegamenti non è sufficiente nella maggior parte dei casi. 
+Spesso è necessario incorporare le informazioni di un altro team. 
+Ma non devi usare solo i link. Giocano bene con altre tecniche di 
+integrazione.
+
+---
+

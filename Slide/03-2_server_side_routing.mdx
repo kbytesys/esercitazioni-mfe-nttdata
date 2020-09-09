@@ -1,0 +1,208 @@
+
+import { Split, Steps } from 'mdx-deck'
+
+import routing from './assets/03/routing.png';
+import flux from './assets/03/flux.png';
+
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark, nightOwl } from "@code-surfer/themes";
+import petflix from "./assets/logo.png"
+
+export const theme = {
+  fonts: {body: 'avenir, sans-serif'},
+  styles: {
+    Slide: {
+      padding: '20px',
+      textAlign: 'left',
+    },
+    Split: {
+      textAlign: 'left!important'
+    },
+    img: {
+      maxWidth: '100%'
+    },
+    weights: 400,
+  },
+  colors: {
+    text: '#6AD798',
+    background: 'rgb(1, 22, 39)',
+    link: '#fff',
+    pre: '#fff',
+    preBackground: '#051626',
+    code: '#fff'
+  }
+}
+
+<Split>
+
+<img src="https://spng.subpng.com/20180329/zdw/kisspng-nginx-reverse-proxy-computer-software-web-cache-tr-container-5abc835fbb1742.2271946815223038397663.jpg" style={{"width": "40vw"}} />
+
+# Server side routing con NGINX
+
+</Split>
+
+---
+
+Avere degli url diversi per team non è una soluzione ottimale:
+
+è necessario avere un unico endpoint **Frontend Proxy**
+
+---
+
+<img src={routing} style={{width:'70vw'}}/>
+
+---
+
+
+- /decide/ -> localhost:90
+- /inspire/ -> localhost:91
+
+---
+
+- /film/ -> localhost:90
+- /recommendations/ -> localhost:91
+
+---
+
+<Split>
+
+<img src={flux} style={{"width": "40vw"}} />
+
+Flusso di una richiesta. 
+
+Il proxy frontend decide quale applicazione deve gestire una richiesta in arrivo. 
+
+Decide in base al percorso dell'URL e alle regole di instradamento configurate.
+
+</Split>
+
+---
+
+Per utilizzare NGINX come frontend proxy abbiamo bisogno di due direttive:
+
+- proxy_pass
+- upstream
+
+----
+
+# proxy_pass
+
+Inoltra le richiieste ad un upstream
+
+# upstream
+
+Endpoint delle nostre team application
+
+---
+
+<CodeSurfer title="nginx.conf" theme={nightOwl} >
+
+```js
+
+upstream team_decide {
+  server localhost:90;
+}
+upstream team_inspire {
+  server localhost:91;
+}
+http {
+  ...
+  server {
+    listen 3000;
+    ...
+    location /film/ {
+      proxy_pass  http://team_decide;
+    }
+    location /decide/ {
+      proxy_pass  http://team_decide;
+    }
+    location /recommendations {
+      proxy_pass  http://team_inspire;
+    }
+    location /inspire/ {
+      proxy_pass  http://team_inspire;
+    }
+}
+
+```
+
+</CodeSurfer>
+
+---
+
+<Split>
+
+<img src="https://media0.giphy.com/media/3orif2JK8DsUSxMShW/200.gif" style={{"width": "40vw"}} />
+
+
+Ora sarà necessario aggiornare tutti i contratti per quanto riguarda gli url
+
+</Split>
+
+---
+
+# Strategie di definizione degli url
+
+- Team routes only
+- Dynamic route configuration
+
+---
+
+# Team routes only
+
+- /decide/   -> Team Decide
+- /inspire/  -> Team Inspire
+
+oppure
+
+- /d/film/bambi  -> Team Decide
+- /i/recommendations  -> Team Inspire
+
+---
+
+# Dynamic route configuration
+
+
+- /film/*        -> Team Decide
+- /wishlist         -> Team Decide
+- /recommendations  -> Team Inspire
+- /summer-trends    -> Team Inspire
+
+---
+
+# responsabilità
+
+con i microfrontend:
+
+<Steps>
+
+- la responsabilità sulle feature è ent-to-end
+- si accetta la ridondanza in favore dello disaccoppiamento
+- Uno dei due team **deve prendere la responsabilità dell'entrypoint**
+
+</Steps>
+
+---
+
+# Quando ha senso adottare questa tecnica
+
+<Steps>
+
+- Evitare problemi CORS 
+- Condividere dati (login data) mediante cookies
+- Performance migliore (only one DNS lookup, SSL handshake)
+
+</Steps>
+
+---
+
+# Skipper - Alternativa a nginx
+
+`https://opensource.zalando.com/skipper/`
+
+
+

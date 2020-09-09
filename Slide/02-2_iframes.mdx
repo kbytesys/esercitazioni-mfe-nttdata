@@ -1,0 +1,143 @@
+
+import { Split } from 'mdx-deck'
+
+import iframes from './assets/02/iframes.png';
+
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark, nightOwl } from "@code-surfer/themes";
+import petflix from "./assets/logo.png"
+
+export const theme = {
+  fonts: {body: 'avenir, sans-serif'},
+  styles: {
+    Slide: {
+      padding: '20px',
+      textAlign: 'left',
+    },
+    Split: {
+      textAlign: 'left!important'
+    },
+    img: {
+      maxWidth: '100%'
+    },
+    weights: 400,
+  },
+  colors: {
+    text: '#6AD798',
+    background: 'rgb(1, 22, 39)',
+    link: '#fff',
+    pre: '#fff',
+    preBackground: '#051626',
+    code: '#fff'
+  }
+}
+
+# Composizione via iframe
+
+---
+
+<Split>
+
+<img src="https://media1.giphy.com/media/5LmzLH3kjlNqNCpDcU/200.gif" style={{"width": "20vw"}} />
+
+# Siamo davvero sicuri
+
+</Split>
+
+---
+
+# cosa possiamo fare meglio dei link
+dobbiamo migliorare l'esperienza del cliente, **il link non viene notato**
+
+Dovremo mostrare i consigli lateralmente, la soluzione degli **iframe** è la  più rapida da sviluppare
+
+---
+
+# Manteniamo
+
+- robustezza
+- disaccoppiamento
+
+---
+
+Gli iframe sono dotati di un forte isolamento. 
+
+`Ciò che accade nell'iframe rimane nell'iframe.`
+
+---
+
+<img src={iframes} style={{width: '70vw'}} />
+
+---
+
+# Il problema della responsività
+
+- se il layout è responsivo potresti avere dei problemi con le altezze
+- il team inspire è vincolato all'altezza del team Decide (**sperimentazione limitata**)
+- il contratto si complica, oltre gli url **ora si deve conoscere l'altezza**
+
+`iframe-resizer github.com/davidjbradshaw/iframe-resizer`
+
+---
+
+# I vantaggi
+
+Tecnica di composizione ideale:
+
+-  Gli iframe funzionano in tutti i browser. 
+- Forniscono un forte isolamento tecnico. Script e stili sono isolati. 
+
+---
+
+# Gli svantaggi
+
+---
+
+## Vincoli di layout 📐
+
+Come già discusso, l'assenza di una soluzione affidabile per l'altezza automatica dell'iframe è uno degli svantaggi più significativi nell'uso quotidiano.
+
+---
+
+## Il prezzo da pagare 💵
+
+- operazione costosa dal punto di vista di un browser
+- ogni iframe crea un nuovo contesto di navigazione, memoria e cpu alle stelle. 
+
+---
+
+## Male per l'accessibilità 👨‍🦽
+
+La struttura semantica della pagina non è solo estetica. 
+
+strumenti come gli screen reader non riescono a districarsinelle pagine con gli iframe
+
+---
+
+## Male per i motori di ricerca 🖥
+
+Per la seo gli iframe hanno una cattiva reputazione
+
+Un crawler indicizzerebbe la nostra pagina vedendola come 2 pagine diverse. 
+
+- La pagina esterna 
+- La pagina interna inclusa. 
+
+Le parole in un iframe non vengono usate per indicizzare il frame parent
+
+---
+
+## Quando hanno senso gli iframe?
+
+Spotify li usa per l'app desktop
+
+La loro tecnica di integrazione si basava sull'utilizzo di iframe per le diverse parti dell'applicazione. 
+- layout generale della loro applicazione è piuttosto statico (struttura dell'app non cambia spesso) 
+- l'indicizzazione dei motori di ricerca non è un problema
+
+---
+

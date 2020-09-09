@@ -1,0 +1,413 @@
+
+import { Split } from 'mdx-deck'
+import asset1 from './assets/1.png'
+import asset2 from './assets/2.png'
+import asset3 from './assets/3.png'
+
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark } from "@code-surfer/themes";
+import petflix from "./assets/logo.png"
+
+export const theme = {
+  fonts: {body: 'avenir, sans-serif'},
+  styles: {
+    Slide: {
+      padding: '20px',
+      textAlign: 'left'
+    },
+    Split: {
+      textAlign: 'left!important'
+    },
+    img: {
+      maxWidth: '100%'
+    },
+    weights: 400,
+  },
+  colors: {
+    text: '#6AD798',
+    background: 'rgb(1, 22, 39)',
+    link: '#fff',
+    pre: '#fff',
+    preBackground: '#051626',
+    code: '#fff'
+  }
+}
+
+
+# Microfrontend
+
+<img src={petflix} style={{width:"500px"}} />
+
+
+---
+
+<Split>
+
+<img src="https://staticfanpage.akamaized.net/wp-content/uploads/sites/16/2017/08/camera-cafe-senza-olmo.jpg" style={{width:"500px"}} />
+
+
+## Inizio dell'esperienza della start-up (Team piccolo)
+
+- comunicazione semplice
+- ogni sviluppatore ha la conoscenza del progetto e delle funzioni
+- funzioni sviluppate velocemente
+- decisini prese alla macchinetta del caffe
+
+</Split>
+
+---
+
+<Split>
+
+<img src="https://www.cinematographe.it/wp-content/uploads/2017/08/camera-cafe-6-promo-nuovo-mondo.jpg" style={{width:"500px"}} />
+
+
+## La startup cresce (Team grande)
+
+Quando il progetto cresce, cresce il team ma la produttività non scala alla stessa velocità.
+
+- ogni dev non puo conoscere tutto
+- emergono i Knowledge silos
+- bisogna fare riunioni per decidere qualunque cosa anche le più banali
+
+
+</Split>
+
+---
+
+<Split>
+
+<img src="https://www.mozzafiato.info/wp-content/uploads/2018/04/divide_et_impera-1024x640.jpg" style={{width:"500px"}} />
+
+Mitigare gli effetti della poca produttività dividendo il progetto in parti. 
+
+Solitamente la divisione porta a fare uno slicing per tecnologie orizzontali: backend, frontend, ops
+
+</Split>
+
+
+
+---
+
+Nuovi silo e nuovi problemi
+
+---
+
+<img src={"https://camunda.com/wp-content/uploads/2020/05/silos.png"} style={{width:"60vw"}} />
+
+---
+
+# E se...
+
+<Steps>
+
+- ... dividessimo il progetto per funzionalità "slicing verticale"
+- ... ogni slice contenesse tutta la logica del quella parte di user journey (rispetto ai microservizi ci mettiamo anche il frontend)
+- ... per ogni slice ci fosse un team dedicato che va dal frontender al backender
+
+</Steps>
+
+---
+
+<img src={asset2} style={{width:"60vw"}} />
+
+---
+
+# Vantaggi
+
+<Steps>
+
+- Ogni team è in grado di sviluppare una feature, senza dover cordinare team di frontend e backend
+- Nessun intermediario, es. api teams. Si delivera solo al cliente
+- Decisioni feature dentro il team
+- Progetto più piccolo quindi più facile farlo, rifattorializzarlo e switchare tecnologia
+
+</Steps>
+
+---
+
+> I micro front end non sono una tecnologia, ma un approccio organizzativo e architetturale 
+
+---
+
+<img src={asset1} style={{height:"70vh"}} />
+
+---
+
+# Come implementarli?
+
+---
+
+> Ogni sistema é autonoma e funziona a prescindere dagli altri
+
+<Steps>
+
+- microservizi
+- datastore autonomo
+- team dedicato
+
+</Steps>
+
+---
+
+# teams
+
+---
+ 
+
+Nome e missione chiara
+
+<img src={asset2} style={{width:"600px"}} />
+
+---
+
+<img src={asset3} style={{width:"75vw"}} />
+
+---
+
+<Split>
+
+<div>
+
+Specialisti:
+
+- Raggruppati per tecnologia
+- Tipico approccio nei microservizi
+- Sembra naturale mettere frontender con frontender ecc... parlano stessa lingua (condividono parti comuni di codice, libs e frameworks, tools)
+
+</div>
+
+<div>
+
+Crossfunzionali:
+
+- Raggruppati per usecase
+- Visione completa della feature
+- Magari non aiutano a scrivere una lib e codice perfetto, ma una feature molto più vicina a quello che serve al cliente
+
+</div>
+
+</Split>
+
+---
+
+# Individuazione di una feature 
+
+## "strategic design"
+
+prendiamo in prestito alcuni concetti dal DDD
+
+---
+
+<Split>
+
+<img src="https://www.accountancyeurope.eu/wp-content/uploads/Core-and-more-visual-landscape.png" style={{"width": "40vw"}} />
+
+## Core subdomain
+
+Dominio principale
+
+
+- Cosa rende il sistema degno di essere scritto?
+- Perché non comprare una soluzione già pronta?
+- Perché non esternalizzarlo?
+
+**critico e fondamentale per il business**
+
+Secondo Eric Evans, 20% del valore totale, 5% della codebase, l'80% dello sforzo.
+
+</Split>
+
+---
+
+<Split>
+
+<img src="https://akveo.github.io/nebular/assets/images/articles/custom-auth/form-with-labels.png" style={{"width": "40vw"}} />
+
+## Generic Subdomain
+
+parti del sistema che facilitano l'attività, ma non sono fondamentali per l'azienda. 
+
+- concetto di business fondamentale
+- non è "core" per l'azienda.
+
+possono essere acquistati o esternalizzati
+
+</Split>
+
+---
+
+<Split>
+
+<img src="https://iotcdn.oss-ap-southeast-1.aliyuncs.com/2018-10/IELTS-Prediction.jpg" style={{"width": "40vw"}} />
+
+## Supporting Subdomain
+
+aiutano a svolgere funzioni accessorie o di supporto 
+legate direttamente a ciò che fa l'azienda. 
+
+- Non è necessaria un'altissima qualità del codice
+- Possono essere sviluppate da dev junior o esternalizzati
+
+Tienilo separato dal dominio principale in modo che non lo 
+influenzi
+
+Es. sistema di suggerimenti 
+
+</Split>
+
+---
+
+<Split>
+
+<img src="https://paulwillmott.files.wordpress.com/2016/09/img_0649.jpg" style={{"width": "40vw"}} />
+
+# Feature Ownership
+
+</Split>
+
+---
+
+# Page Ownership
+
+<Steps>
+
+- Viene dopo l'analisi della customer journey
+- Si dividono le view e le si assegnano a team
+- Team lavorano in completa autonomia
+- Scelgono la tecnologia adatta a quel caso specifico
+- Facilmente disaccoppiabile da altri team perché si usano le pagine e link
+
+</Steps>
+
+---
+
+# Fragment Ownership
+
+<Steps>
+
+- Elementi condivisi in più pagine, header e footer
+- Limitare la condivisione dei components
+- Hanno bisogno di comunicare ma potrebbero avere il loro datastore
+
+</Steps>
+
+---
+
+<Split>
+
+<img src="https://images.ctfassets.net/q33z48p65a6w/6eqP7gDNGX9pUGNKV1hUF9/d6734ecc87ed7653c5d64c2e86857f84/Shared_Spaces_700x700.jpg?fit=thumb&fm=webp&h=1000&q=70&w=1000" style={{"width": "20vw"}} />
+
+# Shared topics
+
+</Split>
+
+
+---
+
+<Steps>
+
+- Design system per garantire una coerenza nella ui (ATOMIC DESIGN)
+- Condivisione info per non creare silos (buona docs su confluence)
+- Asset management: Prestare attenzione a non scaricare due volte la stessa libreria
+
+</Steps>
+
+---
+
+
+
+<Split>
+
+<img src="https://www.strogoff.it/wp-content/uploads/2015/11/Untitled-design-3.png" style={{"width": "40vw"}} />
+
+# Vantaggi e Svantaggi
+
+</Split>
+
+---
+
+<Steps>
+
+- Comunicazione
+- Evita il frontend monolith
+- Cambiare spesso
+- Auto contenuto
+- Gestire legacy code
+
+</Steps>
+
+---
+
+# Comunicazione
+
+Nuove feature senza rimbalzi modifiche tra frontend e backend 
+
+evitando il delay dovuto a continui meeting
+
+**Comunicazione nel team più snella e fluida**
+
+---
+
+# Evita il frontend monolith
+
+<Steps>
+
+- Ogni feature o componente è autonomo nel deploy
+- Isoli il rischio al blocco (Errori e bug / Scelte tecnologiche sbagliate)
+- Scope contenuto rende più facile spiegarlo o comprenderlo (ebay / compralo subito)
+- Codebase più piccola, refactoring più agile e manutienibile 
+- Codebase più piccola comportamento più prevedibile
+
+</Steps>
+
+---
+
+# Cambiare spesso
+
+Sperimentare nuove tecnologie con rischio contenuto
+
+<Steps>
+
+- Ci rende (azienda) affascinanti in fase di recuiting.
+- Ottimo in un epoca dove emerge un framework js a settimana
+- Contenere le sperimentazione (es. elm frontend, Phoenix elixir Cassandra) 
+
+</Steps>
+
+---
+
+# Auto contenuto
+
+- Moduli che hanno versioni diverse dello stesso framework
+- Autocontenuto e disaccoppiato = ottimizzato per essere rimosso, __optimize for destroyability__
+
+---
+
+# Legacy code
+
+Cambiare gradualmente a tecnologie più efficienti senza riscrivere tutto
+
+---
+
+<Split>
+
+<img src="https://cdn.pixabay.com/photo/2013/07/13/13/24/fist-160958_1280.png" style={{"width": "20vh"}} />
+
+# Svantaggi
+
+<Steps>
+
+- Aggiungono un livello complessità e se con i microservizi scaliamo aggiungendo nodi non possiamo scalare browser
+- La condivisione di fragment ci rende dipendenti meglio un approccio share nothing come suggerito da Luca mezzalira
+- Ridondanza: scrivere più volte stesso code e fare bug fix più volte una per code base
+
+</Steps>
+
+</Split>
+
+---

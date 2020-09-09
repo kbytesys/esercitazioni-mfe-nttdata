@@ -1,0 +1,21 @@
+{
+  "name": "slide",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "01": "mdx-deck 01_intro.mdx",
+    "02-1": "mdx-deck 02-1_first_project.mdx",
+    "02-2": "mdx-deck 02-2_iframes.mdx",
+    "03-1": "mdx-deck 03-1_ajax.mdx",
+    "03-2": "mdx-deck 03-2_server_side_routing.mdx"
+  },
+  "dependencies": {
+    "code-surfer": "^3.1.1",
+    "gatsby-cli": "^2.12.82",
+    "mdx-deck": "^4.1.1",
+    "gatsby": "^2.24.40"
+  },
+  "author": "",
+  "license": "ISC"
+}
