@@ -17,12 +17,13 @@ const buyButtonClient = layout.client.register({
 const app = express();
 app.use(morgan("dev"));
 app.use(layout.middleware());
-app.use("/static", express.static("/static"));
+app.use("/static", express.static("./static"));
 
 layout.css([{ value: "/static/tailwind.min.css" }]);
-layout.js([{ value: "/static/page.js" }]);
+layout.js([{ value: "/static/page.js", defer: true }]);
 
 app.get("/film", async (req, res, next) => {
+
   const incoming = res.locals.podium;
 
   let buyButtonResponse = await buyButtonClient.fetch(incoming, {
@@ -32,9 +33,11 @@ app.get("/film", async (req, res, next) => {
     },
   });
 
-  incoming.podlets = [buyButtonClient];
+  incoming.podlets = [buyButtonResponse];
+
 
   res.status(200).podiumSend(`
+  <div class="bg-gray-900">
     <div class="w-1/3 mx-auto p-3">
         <img
         class="rounded w-full image"
@@ -62,5 +65,8 @@ app.get("/film", async (req, res, next) => {
         </div>
         ${buyButtonResponse}
     </div>
+    </div>
     `);
 });
+
+app.listen(3000);
