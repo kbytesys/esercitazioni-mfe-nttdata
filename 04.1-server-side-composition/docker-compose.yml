@@ -1,17 +1,17 @@
 version: '3'
 services:
-  team-caronte:
-    build:team-caronte/
+  entrypoint4.1:
+    build: entrypoint/
     ports:
       - "3000:3000"
     depends_on:
-      - "team-decide"
-      - "team-inspire"
-  team-decide:
+      - "team-decide4.1"
+      - "team-inspire4.1"
+  team-decide4.1:
     build: team-decide/
     ports:
       - "91:91"
-  team-inspire:
+  team-inspire4.1:
     build: team-inspire/
     ports:
       - "92:92"
