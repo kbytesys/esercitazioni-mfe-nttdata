@@ -20,6 +20,18 @@ const promotionsAreaClient = layout.client.register({
   timeout: 200
 });
 
+const trailerPlayerClient = layout.client.register({
+  name: "trailer-player",
+  uri: "http://localhost:3003/trailer-player/manifest.json",
+  timeout: 200
+});
+
+const navigationBarClient = layout.client.register({
+  name: "navigation-bar",
+  uri: "http://localhost:3004/navigation-bar/manifest.json",
+  timeout: 1000
+});
+
 const app = express();
 app.use(morgan("dev"));
 app.use(layout.middleware());
@@ -40,11 +52,19 @@ app.get("/film", async (req, res, next) => {
   });
   let promotionsAreaResponse = await promotionsAreaClient.fetch(incoming, {});
 
-  incoming.podlets = [buyButtonResponse, promotionsAreaResponse];
+  let trailerPlayerResponse = await trailerPlayerClient.fetch(incoming, {
+    query: {
+      filmid: 0
+    }
+  })
 
+  let navigationBarResponse = await navigationBarClient.fetch(incoming, {});
+
+  incoming.podlets = [buyButtonResponse, promotionsAreaResponse, trailerPlayerResponse, navigationBarResponse];
 
   res.status(200).podiumSend(`
   <div class="bg-gray-900">
+    ${navigationBarResponse}
     <div class="w-1/3 mx-auto p-3">
         <img
         class="rounded w-full image"
@@ -69,6 +89,9 @@ app.get("/film", async (req, res, next) => {
         incaricato dai manager della squadra dei Dolphins, di ritrovare il
         delfino Snowflake, mascotte della squadra, rapito alla vigilia della
         finale del Super Bowl.
+            <div>
+                ${trailerPlayerResponse}
+            </div>
         </div>
         ${buyButtonResponse}
 
