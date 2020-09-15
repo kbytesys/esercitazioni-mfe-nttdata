@@ -14,6 +14,12 @@ const buyButtonClient = layout.client.register({
   timeout: 500,
 });
 
+const promotionsAreaClient = layout.client.register({
+  name: "promotions-area",
+  uri: "http://localhost:3002/promotions-area/manifest.json",
+  timeout: 200
+});
+
 const app = express();
 app.use(morgan("dev"));
 app.use(layout.middleware());
@@ -32,8 +38,9 @@ app.get("/film", async (req, res, next) => {
       version: "standard",
     },
   });
+  let promotionsAreaResponse = await promotionsAreaClient.fetch(incoming, {});
 
-  incoming.podlets = [buyButtonResponse];
+  incoming.podlets = [buyButtonResponse, promotionsAreaResponse];
 
 
   res.status(200).podiumSend(`
@@ -64,6 +71,10 @@ app.get("/film", async (req, res, next) => {
         finale del Super Bowl.
         </div>
         ${buyButtonResponse}
+
+        <div>
+          ${promotionsAreaResponse}
+        </div>
     </div>
     </div>
     `);
