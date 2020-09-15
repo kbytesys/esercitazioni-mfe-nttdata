@@ -1,0 +1,15 @@
+{
+  "name": "05-frontend-integration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently --names \"decide, inspire, checkout\" \"mfserve --listen 3000 team-decide\" \"mfserve --listen 3001 team-inspire\" \"mfserve --listen 3002 team-checkout\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@microfrontends/serve": "^11.3.0",
+    "concurrently": "^5.3.0"
+  }
+}
